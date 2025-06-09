@@ -114,12 +114,12 @@ public class Main {
                         break;
 
                     case 8:
-                        System.out.println("📚 Books sorted by title:");
+                        System.out.println("Books sorted by title:");
                         service.sortBooksByTitle();
                         break;
 
                     case 9:
-                        System.out.println("📚 Books sorted by author:");
+                        System.out.println("Books sorted by author:");
                         service.sortBooksByAuthor();
                         break;
 
@@ -129,25 +129,25 @@ public class Main {
                         break;
 
                     case 11:
-                        System.out.println("📋 Members with borrowed books:");
+                        System.out.println("Members with borrowed books:");
                         service.listMembersWithBorrowedBooks();
                         break;
 
                     case 12:
-                        System.out.println("⏰ Overdue Book Records:");
+                        System.out.println("Overdue Book Records:");
                         service.reportOverdueBooks();
                         break;
 
                     case 13:
                         running = false;
-                        System.out.println("👋 Exiting Library System. Goodbye!");
+                        System.out.println("Exiting Library System. Goodbye!");
                         break;
 
                     default:
-                        System.out.println("❌ Invalid choice. Please try again.");
+                        System.out.println("Invalid choice. Please try again.");
                 }
             } catch (Exception e) {
-                System.out.println("❌ Error: " + e.getMessage());
+                System.out.println("Error: " + e.getMessage());
             }
         }
 
