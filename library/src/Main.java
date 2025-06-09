@@ -1,6 +1,3 @@
-import exception.Book_not_available;
-import exception.MemberNotFoundException;
-import exception.OverdueBookException;
 import model.Bookspresent;
 import model.Member_details;
 import model.Book_Lending_record;
@@ -8,12 +5,15 @@ import repository.Main_repository;
 
 import java.time.LocalDate;
 import java.util.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
 import model.*;
 import repository.Main_repository;
 import service.LibraryService;
 import exception.*;
+import service.Overdue;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -23,16 +23,25 @@ public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+
+
         Main_repository<Bookspresent> bookRepo = new Main_repository<>();
         Main_repository<Member_details> memberRepo = new Main_repository<>();
         Main_repository<Book_Lending_record> lendingRepo = new Main_repository<>();
 
         LibraryService service = new LibraryService(bookRepo, memberRepo, lendingRepo);
 
+        // Run once
+        executor.execute(new Overdue(lendingRepo, memberRepo));
+        
+        executor.shutdown();
+
+
         boolean running = true;
 
         while (running) {
-            System.out.println("\n📚 Library Management Menu:");
+            System.out.println("\nLibrary Management Menu:");
             System.out.println("1. Add Book");
             System.out.println("2. Add Member");
             System.out.println("3. Issue Book");
@@ -46,7 +55,7 @@ public class Main {
             System.out.println("11. List members with borrowed books");
             System.out.println("12. Report overdue books");
             System.out.println("13. Exit");
-            System.out.print("👉 Enter your choice: ");
+            System.out.print("Enter your choice: ");
             int choice = scanner.nextInt();
             scanner.nextLine(); // consume newline
 
@@ -124,7 +133,7 @@ public class Main {
                         break;
 
                     case 10:
-                        System.out.println("📖 Available books:");
+                        System.out.println("Available books:");
                         service.listAvailableBooks();
                         break;
 
@@ -150,6 +159,8 @@ public class Main {
                 System.out.println("Error: " + e.getMessage());
             }
         }
+        
+        
 
         scanner.close();
     }
